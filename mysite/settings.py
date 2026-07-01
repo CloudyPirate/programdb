@@ -125,7 +125,7 @@ CSRF_COOKIE_SECURE = True
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default=DATABASE_URL,
+        default=postgresql://dbtest:ZoxFxdEaOzuE5HSWKetJQikZvdKL2BJf@dpg-d926n1ho3t8c73b39bug-a/multidb_kbga,
         conn_max_age=600
     )
 }
