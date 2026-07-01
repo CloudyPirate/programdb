@@ -3,7 +3,7 @@
 set -o errexit
 
 # Modify this line as needed for your package manager (pip, poetry, etc.)
-uv pip install -r requirements.txt
+uv build
 
 # Convert static asset files
 python uv run manage.py collectstatic --no-input
