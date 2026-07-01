@@ -1,0 +1,17 @@
+asgiref==3.11.1
+diff-match-patch==20241021
+django==6.0.6
+django-filter==25.2
+django-import-export==4.4.1
+django-multi-tenants==0.1.3.3
+django-tenant-schemas==2.0.0
+django-tenant-users==2.2.1
+django-tenants==3.10.1
+gunicorn==26.0.0
+ordered-set==4.1.0
+packaging==26.2
+pillow==12.2.0
+psycopg2-binary==2.9.12
+python-dotenv==1.2.2
+sqlparse==0.5.5
+tablib==3.9.0
