@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 from django.core.checks import templates
 from dotenv import  load_dotenv
@@ -30,6 +31,13 @@ SECRET_KEY = os.getenv('DJANGO')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG',default=0))
+if not  DEBUG:
+    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+    # and renames the files with unique names for each version to support long-term caching
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
@@ -70,6 +78,7 @@ INSTALLED_APPS = list(SHARED_APPS) + [
 MIDDLEWARE = [
     "django_tenants.middleware.main.TenantMainMiddleware",
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,7 +104,7 @@ TEMPLATES = [
         },
     },
 ]
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Add this to register your global static directory
 STATICFILES_DIRS = [
@@ -104,7 +113,7 @@ STATICFILES_DIRS = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 # Enable the redirect from HTTP to HTTPS
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 # Secure your session and CSRF cookies over HTTPS connections
 SESSION_COOKIE_SECURE = True
@@ -114,14 +123,11 @@ CSRF_COOKIE_SECURE = True
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": os.getenv("ENGINE"),
-        "NAME": os.getenv("NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("PASSWORD"),
-        "HOST": os.getenv("HOST"),
-        "PORT": os.getenv("PORT"),
-    }
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://dbtest:ZoxFxdEaOzuE5HSWKetJQikZvdKL2BJf@dpg-d926n1ho3t8c73b39bug-a/multidb_kbga',
+        conn_max_age=600
+    )
 }
 DATABASE_ROUTERS = [
     "django_tenants.routers.TenantSyncRouter",
